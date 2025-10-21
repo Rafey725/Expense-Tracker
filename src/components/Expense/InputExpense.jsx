@@ -1,4 +1,4 @@
-export default function InputExpenseSource({ removeExpenseBox, handleInput }) {
+export default function InputExpense({ removeExpenseBox, handleInput }) {
     return (
         <div className="absolute top-0 left-0 w-screen h-screen bg-black/70 flex flex-col justify-center items-center">
             <div className='sm:min-h-100 sm:min-w-120 px-3 py-3 bg-white/5 text-white/70 rounded-lg relative z-10'>

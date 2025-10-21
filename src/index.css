@@ -8,7 +8,7 @@ body,
   width: 100%;
 }
 
-*{
+* {
   box-sizing: border-box;
 }
 
@@ -32,4 +32,33 @@ button {
   background: #F7F7F7;
   transform: translateX(-50px);
   /* transition-timing-function: linear; */
+}
+
+/* The entire scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+  /* vertical scrollbar width */
+  height: 10px;
+  /* horizontal scrollbar height */
+}
+
+/* The scrollbar track (background) */
+::-webkit-scrollbar-track {
+  background: #121212;
+  /* light gray background */
+  border-radius: 50px;
+}
+
+/* The scrollbar thumb (the draggable part) */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  /* dark gray */
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+/* The scrollbar thumb on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+  /* even darker on hover */
 }
