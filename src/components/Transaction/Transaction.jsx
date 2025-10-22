@@ -2,22 +2,13 @@ import { useState, useEffect } from "react"
 import InputTransaction from "./InputTransaction"
 import TransactionElements from "./TransactionElements"
 
-export default function Transaction({ transactionData, handleHover, handleLeave, hoveredId, deleteTransaction ,setTransactionData}) {
-    // State to manage transaction box
-    let [inputTransaction, setInputTransaction] = useState(false)
+export default function Transaction({ transactionData, handleHover, handleLeave, hoveredId, deleteTransaction, setTransactionData, addTransactionBox, editTransactionBox, removeTransactionBox, inputTransaction,handleEditedInput }) {
 
     // Save data to local storage whenever state updated
     useEffect(() => {
         localStorage.setItem("Transactions", JSON.stringify(transactionData))
     }, [transactionData])
 
-    // Add and Remove income box
-    function addTransactionBox() {
-        setInputTransaction(true);
-    }
-    function removeTransactionBox() {
-        setInputTransaction(false);
-    }
 
     // Handle submit
     function handleInput(e) {
@@ -28,7 +19,7 @@ export default function Transaction({ transactionData, handleHover, handleLeave,
         // Save to data to state
         setTransactionData(prevData => [...prevData, data])
 
-        setInputTransaction(false)
+        removeTransactionBox()
     }
 
     return (
@@ -44,12 +35,12 @@ export default function Transaction({ transactionData, handleHover, handleLeave,
                     <span>Add new transaction</span>
                 </button>
 
-                {/* Add new income source */}
-                {inputTransaction && <InputTransaction removeTransactionBox={removeTransactionBox} handleInput={handleInput} />}
+                {/* Add new transaction */}
+                {inputTransaction === "new" && <InputTransaction event={"new"} removeTransactionBox={removeTransactionBox} handleInput={handleInput} />}
             </div>
 
             <div className="h-full bg-[#a8a8a80a] px-2.5 sm:px-6 py-3 sm:py-6  flex flex-col gap-4">
-                <TransactionElements transactionData={transactionData} handleHover={handleHover} handleLeave={handleLeave} deleteTransaction={deleteTransaction} hoveredId={hoveredId} />
+                <TransactionElements transactionData={transactionData} handleHover={handleHover} handleLeave={handleLeave} deleteTransaction={deleteTransaction} hoveredId={hoveredId} editTransactionBox={editTransactionBox} removeTransactionBox={removeTransactionBox} inputTransaction={inputTransaction} handleEditedInput={handleEditedInput}/>
             </div>
         </main>
     )

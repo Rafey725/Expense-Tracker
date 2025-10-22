@@ -2,22 +2,11 @@ import { useEffect, useState } from "react";
 import InputIncomeSource from "./InputIncomeSource";
 import IncomeElements from "./IncomeElements";
 
-export default function Income({ incomeData, setIncomeData, handleHover, handleLeave, hoveredId, deleteIncome }) {
-
-    let [inputSource, setInputSource] = useState(false)
-
+export default function Income({ incomeData, setIncomeData, handleHover, handleLeave, hoveredId, deleteIncome, addIncomeBox, editIncomeBox, removeIncomeBox, inputSource, handleEditedInput }) {
     // Save data to local storage whenever state updated
     useEffect(() => {
         localStorage.setItem("Incomes", JSON.stringify(incomeData))
     }, [incomeData])
-
-    // Add and Remove income box
-    function addIncomeBox() {
-        setInputSource(true);
-    }
-    function removeIncomeBox() {
-        setInputSource(false);
-    }
 
     // Handle submit
     function handleInput(e) {
@@ -27,10 +16,11 @@ export default function Income({ incomeData, setIncomeData, handleHover, handleL
 
         // Save to data to state
         data.id = Date.now()
+        console.log(data.id);
 
         setIncomeData(prevData => [...prevData, data])
 
-        setInputSource(false)
+        removeIncomeBox()
     }
 
     // localStorage.clear()
@@ -48,12 +38,12 @@ export default function Income({ incomeData, setIncomeData, handleHover, handleL
                 </button>
 
                 {/* Add new income source */}
-                {inputSource && <InputIncomeSource removeIncomeBox={removeIncomeBox} handleInput={handleInput} />}
+                {inputSource === "new" && <InputIncomeSource event={"new"} removeIncomeBox={removeIncomeBox} handleInput={handleInput} />}
             </div>
 
             {/* Income Content */}
             <div className="h-full bg-[#a8a8a80a] px-2.5 sm:px-6 py-3 sm:py-6  flex flex-col gap-4">
-                <IncomeElements incomeData={incomeData} handleHover={handleHover} handleLeave={handleLeave} deleteIncome={deleteIncome} hoveredId={hoveredId} />
+                <IncomeElements incomeData={incomeData} handleHover={handleHover} handleLeave={handleLeave} deleteIncome={deleteIncome} hoveredId={hoveredId} editIncomeBox={editIncomeBox} removeIncomeBox={removeIncomeBox} inputSource={inputSource} handleEditedInput={handleEditedInput} />
             </div>
         </main >
     )

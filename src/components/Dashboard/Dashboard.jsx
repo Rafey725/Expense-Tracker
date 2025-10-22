@@ -1,20 +1,12 @@
-import { useState } from "react"
 import TransactionElements from "../Transaction/TransactionElements"
 import IncomeElements from "../Income/IncomeElements"
 import ExpenseElements from "../Expense/ExpenseElements"
 
-export default function Dashboard({ goToTransactionPage, goToIncomePage, goToExpensePage, transactionData, incomeData, expenseData, handleHover, handleLeave, hoveredId, deleteTransaction, deleteIncome, deleteExpense }) {
-    // Getting total income from local storage
-    let savedIncomes = localStorage.getItem("Incomes") && JSON.parse(localStorage.getItem("Incomes")).map(income => JSON.parse(income.amount))
-    let totalSavedIncome = savedIncomes ? savedIncomes.reduce((acc, cur) => acc + cur, 0) : 0;
+export default function Dashboard({ goToTransactionPage, goToIncomePage, goToExpensePage, transactionData, incomeData, expenseData, handleHover, handleLeave, hoveredId, deleteTransaction, deleteIncome, deleteExpense, editIncomeBox, removeIncomeBox, inputSource, editTransactionBox, removeTransactionBox, inputTransaction, editExpenseBox, removeExpenseBox, inputExpense, handleEditedInput }) {
 
-    // Getting total expense from local storage
-    let savedExpenses = localStorage.getItem("Expenses") && JSON.parse(localStorage.getItem("Expenses")).map(expense => JSON.parse(expense.amount))
-    let totalSavedExpenses = savedExpenses ? savedExpenses.reduce((acc, cur) => acc + cur, 0) : 0;
-
-    let [totalIncome, setTotalIncome] = useState(totalSavedIncome)
-    let [totalExpense, setTotalExpense] = useState(totalSavedExpenses)
-    let [totalBalance, setTotalBalance] = useState(totalSavedIncome - totalSavedExpenses)
+    let totalIncome = incomeData.reduce((acc, cur) => acc + Number(cur.amount), 0)
+    let totalExpense = expenseData.reduce((acc, cur) => acc + Number(cur.amount), 0);
+    let totalBalance = totalIncome - totalExpense
 
     return (
         <main className="bg-[#0b0b0b] w-full h-full rounded-lg overflow-x-hidden  flex flex-col">
@@ -69,7 +61,7 @@ export default function Dashboard({ goToTransactionPage, goToIncomePage, goToExp
                             </button>
                         </div>
                         <div className="mt-5 flex flex-col gap-4">
-                            <TransactionElements transactionData={transactionData} handleHover={handleHover} handleLeave={handleLeave} deleteTransaction={deleteTransaction} hoveredId={hoveredId} />
+                            <TransactionElements transactionData={transactionData} handleHover={handleHover} handleLeave={handleLeave} deleteTransaction={deleteTransaction} hoveredId={hoveredId} editTransactionBox={editTransactionBox} removeTransactionBox={removeTransactionBox} inputTransaction={inputTransaction} handleEditedInput={handleEditedInput}/>
                         </div>
                     </div>
 
@@ -82,7 +74,7 @@ export default function Dashboard({ goToTransactionPage, goToIncomePage, goToExp
                             </button>
                         </div>
                         <div className="mt-5 flex flex-col gap-4">
-                            <IncomeElements incomeData={incomeData} handleHover={handleHover} handleLeave={handleLeave} deleteIncome={deleteIncome} hoveredId={hoveredId} />
+                            <IncomeElements incomeData={incomeData} handleHover={handleHover} handleLeave={handleLeave} deleteIncome={deleteIncome} hoveredId={hoveredId} removeIncomeBox={removeIncomeBox} inputSource={inputSource} editIncomeBox={editIncomeBox} handleEditedInput={handleEditedInput} />
                         </div>
                     </div>
 
@@ -95,7 +87,7 @@ export default function Dashboard({ goToTransactionPage, goToIncomePage, goToExp
                             </button>
                         </div>
                         <div className="mt-5 flex flex-col gap-4">
-                            <ExpenseElements expenseData={expenseData} handleHover={handleHover} handleLeave={handleLeave} deleteExpense={deleteExpense} hoveredId={hoveredId} />
+                            <ExpenseElements expenseData={expenseData} handleHover={handleHover} handleLeave={handleLeave} deleteExpense={deleteExpense} hoveredId={hoveredId} editExpenseBox={editExpenseBox} removeExpenseBox={removeExpenseBox} inputExpense={inputExpense} handleEditedInput={handleEditedInput}/>
                         </div>
                     </div>
                 </div>

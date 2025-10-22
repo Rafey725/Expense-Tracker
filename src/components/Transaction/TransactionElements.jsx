@@ -1,4 +1,7 @@
-export default function ({ transactionData, handleHover, handleLeave, hoveredId, deleteTransaction }) {
+import InputTransaction from "./InputTransaction"
+
+export default function ({ transactionData, handleHover, handleLeave, hoveredId, deleteTransaction, editTransactionBox, removeTransactionBox, inputTransaction,handleEditedInput }) {
+
     let transactionElments = transactionData ? transactionData.map((data) => {
         return (
             <div key={data.id}
@@ -13,11 +16,16 @@ export default function ({ transactionData, handleHover, handleLeave, hoveredId,
                     <p className="text-[12px] font-semibold">{data.date}</p>
                 </div>
                 <div className="flex gap-5 items-center">
+                    {/* Edit button */}
+                    <button onClick={() => editTransactionBox(data.id)}
+                        className={`${hoveredId === data.id ? "visible" : "hidden"} cursor-pointer`}>
+                        <img src="src/assets/editIcon.png" className="w-5 h-5 invert-50 " alt="edit" />
+                    </button>
                     <button onClick={() => deleteTransaction(data.id)}
                         className={`${hoveredId === data.id ? "visible" : "hidden"} cursor-pointer`}>
-                        <img src="src/assets/deleteIcon.png" className="w-5 h-5 invert-70 " alt="delete" />
+                        <img src="src/assets/deleteIcon.png" className="w-5 h-5 invert-50 " alt="delete" />
                     </button>
-                    <div className={`${data.type.toLowerCase() === "income" ? "text-green-400 bg-green-200/15" : "text-red-600 bg-red-200/15"} h-[25px] pb-0.5  rounded-md px-1 flex items-center gap-1`}>
+                    <div className={`text-red-600 bg-red-200/15 h-[25px] pb-0.5  rounded-md px-1 flex items-center gap-1`}>
                         <p className="text-[15px] font-medium">+</p>
                         <p className="text-[13px] mt-[3px] font-medium">${data.amount}</p>
                         <p className="text-[17px]">↗</p>
@@ -28,6 +36,8 @@ export default function ({ transactionData, handleHover, handleLeave, hoveredId,
     }) : null
     return (
         <>
+            {/* Edit transaction */}
+            {inputTransaction === "edit" && <InputTransaction event={"edit"} removeTransactionBox={removeTransactionBox} handleEditedInput={handleEditedInput}/>}
             {transactionElments}
         </>
     )

@@ -2,23 +2,12 @@ import ExpenseElements from "./ExpenseElements";
 import InputExpense from "./InputExpense";
 import { useState, useEffect } from "react";
 
-export default function Expense({ expenseData, setExpenseData, handleHover, handleLeave, hoveredId, deleteExpense }) {
-    // Add income sources and display them
-    let [inputExpense, setInputExpense] = useState(false)
-
-
+export default function Expense({ expenseData, setExpenseData, handleHover, handleLeave, hoveredId, deleteExpense, addExpenseBox, editExpenseBox, removeExpenseBox, inputExpense, handleEditedInput }) {
     // Save data to local storage whenever state updated
     useEffect(() => {
         localStorage.setItem("Expenses", JSON.stringify(expenseData))
     }, [expenseData])
 
-    // Add and Remove income box
-    function addExpenseBox() {
-        setInputExpense(true);
-    }
-    function removeExpenseBox() {
-        setInputExpense(false);
-    }
 
     // Handle submit
     function handleInput(e) {
@@ -30,7 +19,7 @@ export default function Expense({ expenseData, setExpenseData, handleHover, hand
         data.id = Date.now()
         setExpenseData(prevData => [...prevData, data])
 
-        setInputExpense(false)
+        removeExpenseBox()
     }
 
     return (
@@ -47,12 +36,12 @@ export default function Expense({ expenseData, setExpenseData, handleHover, hand
                 </button>
 
                 {/* Add new expense */}
-                {inputExpense && <InputExpense removeExpenseBox={removeExpenseBox} handleInput={handleInput} />}
+                {inputExpense === "new" && <InputExpense event={"new"} removeExpenseBox={removeExpenseBox} handleInput={handleInput} />}
             </div>
 
             {/* Expense Content */}
             <div className="h-full bg-[#a8a8a80a] px-2.5 sm:px-6 py-3 sm:py-6  flex flex-col gap-4">
-                <ExpenseElements expenseData={expenseData} handleHover={handleHover} handleLeave={handleLeave} deleteExpense={deleteExpense} hoveredId={hoveredId}/>
+                <ExpenseElements expenseData={expenseData} handleHover={handleHover} handleLeave={handleLeave} deleteExpense={deleteExpense} hoveredId={hoveredId} editExpenseBox={editExpenseBox} removeExpenseBox={removeExpenseBox} inputExpense={inputExpense} handleEditedInput={handleEditedInput} />
             </div>
         </main>
     )
